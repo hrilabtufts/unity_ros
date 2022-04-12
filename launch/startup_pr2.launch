@@ -1,0 +1,28 @@
+<launch>
+    <!-- set up args -->
+    <arg name="port" default="9090" />
+    <arg name="map_file" default="$(find unity_ros)/maps/SpaceStation5.yaml" />
+    <arg name="use_rviz" default="True" />
+
+    <!-- start the websocket connection -->
+
+    <include file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <arg name="port" value="$(arg port)"/>
+    </include>
+
+    <!-- start gazebo -->
+    <include file = "$(find pr2_gazebo)/launch/pr2_empty_world.launch" >
+        <arg name="gui" value="true"/>
+    </include>
+
+    <!-- load the map file -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+
+    <!-- start the 2d navigation -->
+    <include file = "$(find pr2_2dnav)/launch/pr2_2dnav_1.launch" output="screen" />
+
+    <group if="$(arg use_rviz)">
+        <include file = "$(find pr2_navigation_global)/rviz/rviz_move_base_1.launch" output="screen" />
+    </group>
+</launch>
+

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>unity_ros</name>
+  <version>0.0.1</version>
+  <description>Package for misc launchfiles and configs to spin up robots for control in unity</description>
+  <maintainer email="chris@cthierauf.com">cst</maintainer>
+  <license>CC0</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <export>
+  </export>
+</package>
