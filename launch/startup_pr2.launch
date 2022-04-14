@@ -1,7 +1,7 @@
 <launch>
     <!-- set up args -->
     <arg name="port" default="9090" />
-    <arg name="map_file" default="$(find unity_ros)/maps/SpaceStation5.yaml" />
+    <arg name="map_file" default="$(find unity_ros)/maps/SpaceStation6.yaml" />
     <arg name="use_rviz" default="True" />
 
     <!-- start the websocket connection -->
