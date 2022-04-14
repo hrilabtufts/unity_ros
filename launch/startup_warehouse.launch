@@ -1,0 +1,34 @@
+<launch>
+ 
+ <!-- set up args -->
+ <arg name="port" default="9090" />
+ <arg name="map_file" default="/opt/ros/indigo/share/unity_ros/config/warehouse1.yaml" />    
+ <arg name="use_rviz" default="True" />
+ <arg name="model" default="$(find pr2_description)/robots/pr2.urdf.xacro"/>
+ <!-- start the websocket connection -->
+ 
+ <include file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+ <arg name="port" value="$(arg port)"/> 
+ </include> 
+
+<param name="use_sim_time" type="boolean" value="True" />
+<param name="robot_description" command="$(find xacro)/xacro.py $(arg model)"/>
+ 
+<!-- load the map file -->   
+ <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>  
+
+ <!-- start the 2d navigation -->
+ <include file = "$(find pr2_2dnav)/launch/pr2_2dnav.launch" output="screen" />
+
+
+ <!-- if we want to visualize the navigation, start rviz -->
+ <group if="$(arg use_rviz)"> 
+  <include file = "$(find pr2_navigation_global)/rviz/rviz_move_base.launch" output="screen" /> 
+ </group>
+
+<node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=/image raw out:=/raw_image"/>  
+
+<!-- Load and Start Default Controllers -->
+<include file="$(find pr2_controller_configuration_gazebo)/launch/pr2_default_controllers.launch" />
+
+</launch>
