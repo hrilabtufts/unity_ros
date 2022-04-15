@@ -25,7 +25,7 @@
     <include file = "$(find pr2_2dnav)/launch/pr2_2dnav.launch" output="screen" />
 
     <group if="$(arg use_rviz)">
-        <include file = "$(find pr2_navigation_global)/rviz/rviz_move_base_1.launch" output="screen" />
+        <include file = "$(find pr2_navigation_global)/rviz/rviz_move_base.launch" output="screen" />
     </group>
 </launch>
 
