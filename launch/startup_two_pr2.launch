@@ -5,6 +5,7 @@
     <arg name="map_file" default="$(find unity_ros)/maps/SpaceStation6.yaml" />
     <arg name="use_rviz" default="True" />
     <arg name="use_gazebo" default="True" />
+    <arg name="model" default="$(find pr2_description)/robots/pr2.urdf.xacro"/>
 
     <!-- start the websocket connection -->
 
@@ -14,7 +15,10 @@
 
     <include ns="robot2" file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
         <arg name="port" value="$(arg port2)"/>
-    </include>)
+    </include>
+
+    <param name="use_sim_time" type="boolean" value="True" />
+    <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
 
     <!-- start gazebo -->
     <group if="$(arg use_gazebo)">
