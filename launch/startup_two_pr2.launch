@@ -3,6 +3,7 @@
     <arg name="port" default="9090" />
     <arg name="map_file" default="$(find unity_ros)/maps/SpaceStation6.yaml" />
     <arg name="use_rviz" default="True" />
+    <arg name="use_gazebo" default="True" />
 
     <!-- start the websocket connection -->
 
@@ -11,9 +12,11 @@
     </include>
 
     <!-- start gazebo -->
-    <include file = "$(find pr2_gazebo)/launch/pr2_empty_world.launch" >
-        <arg name="gui" value="true"/>
-    </include>
+    <group if="$(arg use_gazebo)">
+        <include file = "$(find pr2_gazebo)/launch/pr2_empty_world.launch" >
+            <arg name="gui" value="true"/>
+        </include>
+    </group>
 
     <!-- load the map file -->
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
