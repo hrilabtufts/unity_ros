@@ -2,7 +2,7 @@
  
  <!-- set up args -->
  <arg name="port" default="9090" />
- <arg name="map_file" default="/opt/ros/indigo/share/unity_ros/config/warehouse1.yaml" />    
+ <arg name="map_file" default="/opt/ros/indigo/share/unity_ros/maps/warehouse1.yaml" />    
  <arg name="use_rviz" default="True" />
  <arg name="model" default="$(find pr2_description)/robots/pr2.urdf.xacro"/>
  <!-- start the websocket connection -->
