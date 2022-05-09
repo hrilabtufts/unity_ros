@@ -12,13 +12,23 @@
     <param ns="robot2" name="robot_description"  command="$(find xacro)/xacro.py $(arg model)"/>
     <!-- start the websocket connection -->
 
-    <include ns="robot1" file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+    <group ns="robot1">
+    <param name="tf_prefix" value="robot1"/>
+    <include file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
         <arg name="port" value="$(arg port)"/>
     </include>
+    <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+    <param name="use_sim_time" type="boolean" value="True" />
+    </group>
 
+    <group ns="robot2">
+    <param name="tf_prefix" value="robot2"/>
     <include ns="robot2" file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
         <arg name="port" value="$(arg port2)"/>
     </include>
+    <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+    <param name="use_sim_time" type="boolean" value="True" />
+    </group>
 
     <!-- start gazebo -->
     <group if="$(arg use_gazebo)">
