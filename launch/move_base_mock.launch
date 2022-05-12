@@ -1,0 +1,4 @@
+<launch>
+    <node name="move_base" pkg="unity_ros" type="mock_move_base.py" ns="robot1"/>
+    <node name="move_base" pkg="unity_ros" type="mock_move_base.py" ns="robot2"/>
+</launch>
