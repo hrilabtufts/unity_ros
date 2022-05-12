@@ -8,18 +8,13 @@
     <arg name="use_gazebo" default="True" />
     <arg name="model" default="$(find pr2_description)/robots/pr2.urdf.xacro"/>
 
-
     <param name="robot1/robot_description"  command="$(find xacro)/xacro.py $(arg model)"/>
     <param name="robot2/robot_description"  command="$(find xacro)/xacro.py $(arg model)"/>
-    <!-- start the websocket connection -->
 
+    <!-- start the websocket connection -->
     <include ns="robot1" file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
         <arg name="port" value="$(arg port)"/>
     </include>
-<!--
-    <param name="tf_prefix" type="string" value="robot1" ns="robot1"/>
-    <param name="tf_prefix" type="string" value="robot2" ns="robot2"/>
--->
 
     <include ns="robot2" file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
         <arg name="port" value="$(arg port2)"/>
@@ -35,18 +30,13 @@
     <!-- load the map file -->
     <node ns="robot1" name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
     <node ns="robot2" name="map_server" pkg="map_server" type="map_server" args="$(arg map_file2)"/>
-<!--
--->
 
     <!-- start the 2d navigation -->
     <include file = "$(find pr2_2dnav)/launch/pr2_2dnav.launch"  ns="robot1" />
     <include file = "$(find pr2_2dnav)/launch/pr2_2dnav.launch" ns="robot2" />
 
     <group if="$(arg use_rviz)">
-	<node pkg="rviz" type="rviz" name="$(anon rviz)" args="-d ~/rviz.rviz"/>
-<!--
-        <include file = "$(find pr2_navigation_global)/rviz/rviz_move_base.launch" />
--->
+        <node pkg="rviz" type="rviz" name="$(anon rviz)" args="-d ~/rviz.rviz"/>
     </group>
 </launch>
 
