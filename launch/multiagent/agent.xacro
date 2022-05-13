@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="agent">
+    <xacro:arg name="PREFIX" default="" />
+    <xacro:property name="PREFIX" value="$(arg PREFIX)" />
+
+    <link name="${PREFIX}_base_link" />
+    <link name="${PREFIX}_torso" />
+    <link name="${PREFIX}_laser" />
+
+    <joint name="${PREFIX}_fixed_torso" type="fixed" >
+        <parent link="${PREFIX}_base_link"/>
+        <child link="${PREFIX}_torso"/>
+        <origin rpy="0 0 0" xyz="0 0 1" />
+    </joint>
+
+    <joint name="${PREFIX}_laser_mount" type="fixed" >
+        <parent link="${PREFIX}_base_link"/>
+        <child link="${PREFIX}_laser"/>
+        <origin rpy="0 0 0" xyz="0 0 1" />
+    </joint>
+
+</robot>
