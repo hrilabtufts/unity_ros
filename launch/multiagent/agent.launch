@@ -2,6 +2,7 @@
     <arg name="agent_name"    default="agent"                                     />
     <arg name="launch_map"    default="true"                                      />
     <arg name="map"           default="$(find unity_ros)/maps/SpaceStation6.yaml" />
+    <arg name="port"          default="9090"                                      />
 
     <param name="robot_description"
            command="$(find xacro)/xacro '$(find unity_ros)/launch/multiagent/agent.xacro'
@@ -38,18 +39,22 @@
     appropriate sensing interfaces. -->
     <param name="base_link_frame_id" value="$(arg agent_name)_base_link"/>
     <param name="odom_link_frame_id" value="$(arg agent_name)_odom_combined"/>
-    <node name="odometry" pkg="spoof_sensing" type="odom.py"/>
 
     <param name="laser_frame_id" value="$(arg agent_name)_laser"/>
     <node name="lidar"    pkg="spoof_sensing" type="lidar.py"/>
+    <node name="pubclock" pkg="spoof_sensing" type="pubclock.py" />
 
-    <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <!--node pkg="amcl" type="amcl" name="amcl" output="screen">
         <remap from="map" to="/map" />
 
         <param name="use_map_topic" type="bool"   value="true" />
         <param name="base_frame_id" type="string" value="$(arg agent_name)_base_link"     />
         <param name="odom_frame_id" type="string" value="$(arg agent_name)_odom_combined" />
-    </node>
+    </node-->
+
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <arg name="port" value="$(arg port)"/>
+    </include>
 
     <!--rosparam command="load" file="$(find unity_ros)/config/joint_state_config.yaml" />
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_publisher"/-->

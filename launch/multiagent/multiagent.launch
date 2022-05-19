@@ -2,11 +2,13 @@
     <include file = "$(find unity_ros)/launch/multiagent/agent.launch" ns="robot1">
         <arg name="agent_name"    value="robot1"/>
         <arg name="launch_map"    value="false" />
+        <arg name="port"          value="9090"  />
     </include>
 
     <include file = "$(find unity_ros)/launch/multiagent/agent.launch" ns="robot2">
-        <arg name="agent_name" value="robot2"/>
-        <arg name="launch_map" value="false" />
+        <arg name="agent_name"    value="robot2"/>
+        <arg name="launch_map"    value="false" />
+        <arg name="port"          value="9091"  />
     </include>
 
     <node pkg="map_server" type="map_server" name="map_server" args="$(find unity_ros)/maps/SpaceStation6.yaml" />
