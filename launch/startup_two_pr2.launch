@@ -8,19 +8,28 @@
     <arg name="use_gazebo" default="True" />
     <arg name="model" default="$(find pr2_description)/robots/pr2.urdf.xacro"/>
 
-    <param name="robot1/robot_description"  command="$(find xacro)/xacro.py $(arg model)"/>
-    <param name="robot2/robot_description"  command="$(find xacro)/xacro.py $(arg model)"/>
-
     <!-- start the websocket connection -->
-    <include ns="robot1" file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
-        <arg name="port" value="$(arg port)"/>
-    </include>
 
-    <include ns="robot2" file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+    <group ns="robot2">
+    <param name="tf_prefix" value="robot2"/>
+    <include file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
         <arg name="port" value="$(arg port2)"/>
     </include>
+    <param name="robot2/robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+    <param name="use_sim_time" type="boolean" value="True" />
+    </group>
 
-    <!-- start gazebo -->
+
+    <group ns="robot1">
+    <param name="tf_prefix" value="robot1"/>
+    <include file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <arg name="port" value="$(arg port)"/>
+    </include>
+    <param name="robot1/robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+    <param name="use_sim_time" type="boolean" value="True" />
+    </group>
+
+   <!-- start gazebo -->
     <group if="$(arg use_gazebo)">
         <include file = "$(find pr2_gazebo)/launch/pr2_empty_world.launch" >
             <arg name="gui" value="true"/>

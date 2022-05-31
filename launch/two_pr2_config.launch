@@ -1,0 +1,47 @@
+<launch>
+    <!-- set up args -->
+    <arg name="port" default="9090" />
+    <arg name="port2" default="9091" />
+    <arg name="model" default="$(find pr2_description)/robots/pr2.urdf.xacro"/>
+    <arg name="map" default="$(find unity_ros)/maps/SpaceStation6.yaml"/>
+
+    <!-- start the websocket connection -->
+
+   <group ns="robot1">
+    <param name="tf_prefix" value="robot1"/>
+    <include file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <arg name="port" value="$(arg port)"/>
+    </include>
+    <param name="robot1/robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+    
+    <node pkg="map_server" type="map_server" name="map_server" args="$(arg map)"/>
+    <node pkg="acml" type="acml" name="acml">
+        <remap from="map" to="/map"/>
+        <param name="use_map_topic" type="bool" value="true"/>
+        <param name="base_frame_id" type="string" value="robot1_base_link"/>
+        <param name="odom_fame_id" type="string" value="robot1_odom_combined"/>
+    </node>
+    </group>
+
+    <group ns="robot2">
+    <param name="tf_prefix" value="robot2"/>
+    <include file = "$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <arg name="port" value="$(arg port2)"/>
+    </include>
+    <node pkg="map_server" type="map_server" name="map_server" args="$(arg map)"/>
+    <param name="robot2/robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+    <node pkg="acml" type="acml" name="acml">
+        <remap from="map" to="/map"/>
+        <param name="use_map_topic" type="bool" value="true"/>
+        <param name="base_frame_id" type="string" value="robot2_base_link"/>
+        <param name="odom_fame_id" type="string" value="robot2_odom_combined"/>
+    </node>
+    </group>
+
+
+    <!-- start the 2d navigation -->
+    <include file = "$(find pr2_2dnav)/launch/pr2_2dnav.launch"  ns="robot1" />
+    <include file = "$(find pr2_2dnav)/launch/pr2_2dnav.launch" ns="robot2" />
+
+</launch>
+
